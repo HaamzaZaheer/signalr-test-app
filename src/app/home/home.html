@@ -1,0 +1,131 @@
+<div class="container">
+  <header>
+    <h1>🔌 SignalR Hub Tester</h1>
+    <p class="subtitle">Test .NET SignalR Hub Connection & Authorization</p>
+  </header>
+
+  <!-- Authentication Section -->
+  <section class="card">
+    <h2>🔐 Authentication</h2>
+    
+    <div *ngIf="!(isLoggedIn$ | async)" class="auth-form">
+      <div class="form-group">
+        <label for="email">Email:</label>
+        <input 
+          type="email" 
+          id="email" 
+          [(ngModel)]="loginRequest.email"
+          [disabled]="( isLoggingIn$ | async) ?? false"
+          placeholder="abdullah.qahtani@example.com">
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input 
+          type="password" 
+          id="password" 
+          [(ngModel)]="loginRequest.password"
+          [disabled]="(isLoggingIn$ | async) ?? false"
+          placeholder="password123">
+      </div>
+      
+      <button 
+        class="btn btn-primary" 
+        (click)="onLogin()"
+        [disabled]="isLoggingIn$ | async">
+        {{ (isLoggingIn$ | async) ? 'Logging in...' : 'Login' }}
+      </button>
+      
+      <div *ngIf="loginError$ | async as error" class="error-message">
+        ⚠️ {{ error }}
+      </div>
+    </div>
+    
+    <div *ngIf="isLoggedIn$ | async" class="auth-success">
+      <div class="status-badge success">✓ Authenticated</div>
+      <div class="token-info">
+        <strong>Token:</strong>
+        <code>{{ getMaskedToken() }}</code>
+      </div>
+      <button class="btn btn-secondary" (click)="onLogout()">Logout</button>
+    </div>
+  </section>
+
+  <!-- SignalR Connection Section -->
+  <section class="card">
+    <h2>📡 SignalR Connection</h2>
+    
+    <div class="connection-info">
+      <div class="info-row">
+        <strong>Hub URL:</strong>
+        <code>https://localhost:7179/hubs/notification</code>
+      </div>
+      <div class="info-row">
+        <strong>Status:</strong>
+        <span 
+          class="status-badge"
+          [ngClass]="{
+            'success': (connectionStatus$ | async) === 'Connected',
+            'warning': (connectionStatus$ | async) === 'Connecting...' || (connectionStatus$ | async) === 'Reconnecting...',
+            'error': (connectionStatus$ | async) === 'Disconnected'
+          }">
+          {{ connectionStatus$ | async }}
+        </span>
+      </div>
+    </div>
+    
+    <div class="button-group">
+      <button 
+        class="btn btn-success" 
+        (click)="onConnectSignalR()"
+        [disabled]="!(isLoggedIn$ | async) || (connectionStatus$ | async) === 'Connected' || (connectionStatus$ | async) === 'Connecting...'">
+        Connect to Hub
+      </button>
+      
+      <button 
+        class="btn btn-danger" 
+        (click)="onDisconnectSignalR()"
+        [disabled]="(connectionStatus$ | async) === 'Disconnected'">
+        Disconnect
+      </button>
+    </div>
+    
+    <div *ngIf="!(isLoggedIn$ | async)" class="warning-message">
+      ⚠️ Please login first to connect to SignalR hub
+    </div>
+  </section>
+
+  <!-- Messages Section -->
+  <section class="card">
+    <div class="section-header">
+      <h2>📨 Hub Messages</h2>
+      <button 
+        class="btn btn-small" 
+        (click)="onClearMessages()"
+        [disabled]="(messages$ | async)?.length === 0">
+        Clear Messages
+      </button>
+    </div>
+    
+    <div class="messages-container">
+      <div *ngIf="(messages$ | async)?.length === 0" class="no-messages">
+        No messages received yet...
+      </div>
+      
+      <div *ngFor="let message of (messages$ | async)" class="message-item">
+        {{ message }}
+      </div>
+    </div>
+  </section>
+
+  <!-- Debug Info -->
+  <section class="card debug-info">
+    <h3>🔧 Debug Information</h3>
+    <ul>
+      <li>Open browser console (F12) for detailed logs</li>
+      <li>SignalR uses automatic reconnection</li>
+      <li>Authorization header: Bearer token from login</li>
+      <li>Hub methods registered: ReceiveMessage, ReceiveNotification</li>
+    </ul>
+  </section>
+</div>
