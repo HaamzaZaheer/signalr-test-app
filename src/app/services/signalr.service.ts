@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class SignalrService {
-  private hubUrl = 'https://localhost:7179/hubs/notification';
+  private hubUrl = 'https://localhost:7180/hubs/notification';
   private hubConnection: signalR.HubConnection | null = null;
   
   private connectionStatusSubject = new BehaviorSubject<string>('Disconnected');
@@ -30,7 +30,7 @@ export class SignalrService {
       this.hubConnection = new signalR.HubConnectionBuilder()
         .withUrl(this.hubUrl, {
           accessTokenFactory: () => token,
-          // headers: { 'Authorization': `Bearer ${token}` }
+           headers: { 'Auth': `JwAAAB_@_LCAAAAAAAAArLrczNT9HNKLJKCs4wzctyL0r0KXIxjXJ0dDVwKy73CIjITQqNKMgEADZjkscnAAAA` }
         })
         .withAutomaticReconnect()
         .configureLogging(signalR.LogLevel.Information)
