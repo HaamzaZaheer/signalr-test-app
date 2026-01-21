@@ -15,8 +15,8 @@ import { LoginRequest, LoginResponse } from '../models/auth.model';
 export class Home implements OnInit, OnDestroy {
   // Login form
   loginRequest: LoginRequest = {
-    email: 'abdullah.qahtani@example.com',
-    password: 'password123'
+    email: 'zubair.jamil@example.com',
+    password: 'Password1@'
   };
   
   // State managed with BehaviorSubjects

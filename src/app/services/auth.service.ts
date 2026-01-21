@@ -8,14 +8,14 @@ import { LoginRequest, LoginResponse } from '../models/auth.model';
   providedIn: 'root'
 })
 export class AuthService {
-  private apiUrl = 'https://localhost:7179/api/v1/auth';
+  private apiUrl = 'https://profile-moc-test.happyocean-70c0e1b4.uaenorth.azurecontainerapps.io/api/v1/auth';
   private tokenSubject = new BehaviorSubject<string | null>(null);
   public token$ = this.tokenSubject.asObservable();
 
   constructor(private http: HttpClient) {}
 
   login(credentials: LoginRequest): Observable<LoginResponse> {
-    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials).pipe(
+    return this.http.post<LoginResponse>(`${this.apiUrl}/login`, credentials, { headers: { 'auth': 'JwAAAB_@_LCAAAAAAAAArLrczNT9HNKLJKCs4wzctyL0r0KXIxjXJ0dDVwKy73CIjITQqNKMgEADZjkscnAAAA' } }).pipe(
       tap(response => {
         if (response.isSuccess && response.data.token) {
           this.tokenSubject.next(response.data.token);

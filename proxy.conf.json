@@ -1,12 +1,12 @@
 {
   "/api": {
-    "target": "https://localhost:7179",
+    "target": "https://profile-moc-test.happyocean-70c0e1b4.uaenorth.azurecontainerapps.io",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug"
   },
   "/hubs": {
-    "target": "https://localhost:7179",
+    "target": "https://profile-moc-test.happyocean-70c0e1b4.uaenorth.azurecontainerapps.io",
     "secure": false,
     "changeOrigin": true,
     "logLevel": "debug",

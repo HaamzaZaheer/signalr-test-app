@@ -7,7 +7,7 @@ import { AuthService } from './auth.service';
   providedIn: 'root'
 })
 export class SignalrService {
-  private hubUrl = 'https://localhost:7180/hubs/notification';
+  private hubUrl = 'https://profile-moc-test.happyocean-70c0e1b4.uaenorth.azurecontainerapps.io/hubs/notification';
   private hubConnection: signalR.HubConnection | null = null;
   
   private connectionStatusSubject = new BehaviorSubject<string>('Disconnected');
